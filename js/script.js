@@ -100,8 +100,23 @@ let book_catalogue = [
     },
 ];
 
-function print_book(book)
+function get_random_string()
 {
+    // add "a" at the start, because sometimes random string starts with a number which is not valid
+    return "a" + Math.random().toString(36).slice(2, 7);
+}
+
+function create_book_list_item(ul, book)
+{
+    const li_1 = document.createElement('li');
+    li_1.textContent = `ISBN: ${book.isbn}`;
+    ul.appendChild(li_1);
+
+    const li_2 = document.createElement('li');
+    li_2.textContent = `Release year: ${book.release_date}`;
+    ul.appendChild(li_2);
+
+    const li_3 = document.createElement('li');
     let formatted_title = book.title;
 
     if (new Date().getFullYear() == book.release_date)
@@ -109,50 +124,49 @@ function print_book(book)
         formatted_title += " (new book)";
     }
 
-    console.log(`ISBN: ${book.isbn}`);
-    console.log(`Release year: ${book.release_date}`);
-    console.log(`Title: ${formatted_title}`);
-    console.log(`Number of pages: ${book.num_of_pages}`);
-    console.log(`Price: ${book.price}`);
+    li_3.textContent = `Title: ${formatted_title}`;
+    ul.appendChild(li_3);
 
-    console.log("------------------------")
+    const li_4 = document.createElement('li');
+    li_4.textContent = `Number of pages: ${book.num_of_pages}`;
+    ul.appendChild(li_4);
+
+    const li_5 = document.createElement('li');
+    li_5.textContent = `Price: ${book.price}`;
+    li_5.appendChild(li_4);
 }
 
 function print_catalogue(catalogue)
 {
+    const accordion = document.querySelector('#accordionExample');
+    const category_item_template = document.querySelector('#category-item');
+    
     for (const category of catalogue) 
     {
-        let most_expensive = 0;
-        let least_expensive = Infinity;
+        let reference = get_random_string();
+      
+        let category_item = category_item_template.content.cloneNode(true);
+        let category_btn = category_item.querySelector('button');
+        category_btn.setAttribute('data-bs-target', `#${reference}`);
+        category_btn.setAttribute('aria-controls', reference);
+        let category_content = category_item.querySelector('#collapseTemplate');
+        category_content.id = reference;
+        let category_body = category_item.querySelector('.accordion-body');
 
-        console.log(`${category.name} (${category.books.length} books)`);
+        accordion.appendChild(category_item);
+
+        category_btn.textContent = category.name;
 
         let books = category.books;
 
-        // filtruoti ir pailti tik naujas knygas (2023)
-        // books = category.books.filter((book) => new Date().getFullYear() == book.release_date);
-        
-        // surusiuoti knygas A -> Z
-        // books = books.sort((a, b) => a.title.localeCompare(b.title));
-
         for (const book of books) 
         {
-            if (book.price > most_expensive)
-            {
-                most_expensive = book.price;
-            }
-
-            if (book.price < least_expensive)
-            {
-                least_expensive = book.price;
-            }
-
-
-            print_book(book);
+            const books_ul = document.createElement('ul');
+            create_book_list_item(books_ul, book);
+            category_body.appendChild(books_ul);
         }
-
-        console.log(`Most expensive book in a category: ${most_expensive} and least expensive is ${least_expensive}`)
     }
 }
 
 print_catalogue(book_catalogue);
+
