@@ -90,12 +90,11 @@ let book_catalogue = [
 
 function print_book(book)
 {
-    
     let formatted_title = book.title;
 
     if (new Date().getFullYear() == book.release_date)
     {
-        formatted_title += " (nauja knyga)";
+        formatted_title += " (new book)";
     }
 
 
