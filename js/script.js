@@ -1,10 +1,10 @@
 import catalogue from './data.js';
 
-(function print_catalogue(catalogue)
+(function (catalogue)
 {
     for (const category of catalogue) 
     {
-        let category_body = render_category(category.name);
+        const category_body = render_category(category.name);
 
         for (const book of category.books) 
         {
@@ -17,19 +17,19 @@ function render_category(category_name)
 {
 	const accordion_container = document.querySelector('#accordionExample');
 	const accordion_item_template = document.querySelector('#category-item');
-	const identifier = get_random_identifier();
+	const unique_identifier = "a" + Math.floor(Math.random() * 99999);
 
-	let accordion_item = accordion_item_template.content.cloneNode(true);
+	const accordion_item = accordion_item_template.content.cloneNode(true);
 
-	let accordion_title = accordion_item.querySelector('button');
-	accordion_title.setAttribute('data-bs-target', `#${identifier}`);
-	accordion_title.setAttribute('aria-controls', identifier);
+	const accordion_title = accordion_item.querySelector('button');
+	accordion_title.setAttribute('data-bs-target', `#${unique_identifier}`);
+	accordion_title.setAttribute('aria-controls', unique_identifier);
 	accordion_title.textContent = category_name;
 
-	let accordion_body_container = accordion_item.querySelector('#collapseTemplate');
-	accordion_body_container.id = identifier;
+	const accordion_body_container = accordion_item.querySelector('#collapseTemplate');
+	accordion_body_container.id = unique_identifier;
 
-	let accordion_body = accordion_item.querySelector('.accordion-body');
+	const accordion_body = accordion_item.querySelector('.accordion-body');
 	
 	accordion_container.appendChild(accordion_item);
 
@@ -55,10 +55,4 @@ function create_book_properties_list(book)
 	}
 
 	return list;
-}
-
-function get_random_identifier()
-{
-	// returns a valid "class" or "id" string that starts with a letter followed by numbers
-	return "a" + Math.floor(Math.random() * 9999999);
 }
