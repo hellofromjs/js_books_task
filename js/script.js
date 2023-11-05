@@ -18,7 +18,7 @@ function render_category(category_name)
 	const accordion_container = document.querySelector('#accordionExample');
     const accordion_item_template = document.querySelector('#category-item');
 	const identifier = get_random_identifier();
-      
+
 	let accordion_item = accordion_item_template.content.cloneNode(true);
 
 	let accordion_title = accordion_item.querySelector('button');
