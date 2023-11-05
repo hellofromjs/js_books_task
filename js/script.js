@@ -1,172 +1,64 @@
-let book_catalogue = [
-    {
-        name: "Fantasy",
-        books: [
-            {
-                isbn: "FAN001",
-                release_date: 2022,
-                title: "DFantasy Book 1",
-                num_of_pages: 120,
-                price: 125.56,
-            },
-            {
-                isbn: "FAN002",
-                release_date: 2021,
-                title: "CFantasy Book 2",
-                num_of_pages: 150,
-                price: 25.56,
-            },
-            {
-                isbn: "FAN003",
-                release_date: 2020,
-                title: "AFantasy Book 3",
-                num_of_pages: 170,
-                price: 35.70,
-            },
-            {
-                isbn: "FAN004",
-                release_date: 2019,
-                title: "BFantasy Book 4",
-                num_of_pages: 190,
-                price: 40.10,
-            },
-        ]
-    },
-    {
-        name: "Poetry",
-        books: [
-            {
-                isbn: "POE001",
-                release_date: 2008,
-                title: "DPoetry Book 1",
-                num_of_pages: 99,
-                price: 36.78,
-            },
-            {
-                isbn: "POE002",
-                release_date: 2023,
-                title: "CPoetry Book 2",
-                num_of_pages: 139,
-                price: 78.80,
-            },
-            {
-                isbn: "POE003",
-                release_date: 2006,
-                title: "BPoetry Book 3",
-                num_of_pages: 159,
-                price: 56.60,
-            },
-            {
-                isbn: "POE004",
-                release_date: 2005,
-                title: "APoetry Book 4",
-                num_of_pages: 179,
-                price: 78.70,
-            },
-        ]
-    },
-    {
-        name: "Horror",
-        books: [
-            {
-                isbn: "HOR001",
-                release_date: 2004,
-                title: "GHorror Book 1",
-                num_of_pages: 300,
-                price: 100.05,
-            },
-            {
-                isbn: "HOR002",
-                release_date: 2006,
-                title: "EHorror Book 2",
-                num_of_pages: 500,
-                price: 250.50,
-            },
-            {
-                isbn: "HOR003",
-                release_date: 2023,
-                title: "FHorror Book 3",
-                num_of_pages: 600,
-                price: 13.37,
-            },
-            {
-                isbn: "HOR004",
-                release_date: 2000,
-                title: "HHorror Book 4",
-                num_of_pages: 650,
-                price: 85.36,
-            },
-        ]
-    },
-];
+import catalogue from './data.js';
 
-function get_random_string()
+(function print_catalogue(catalogue)
 {
-    // add "a" at the start, because sometimes random string starts with a number which is not valid
-    return "a" + Math.random().toString(36).slice(2, 7);
-}
-
-function create_book_list_item(ul, book)
-{
-    const li_1 = document.createElement('li');
-    li_1.textContent = `ISBN: ${book.isbn}`;
-    ul.appendChild(li_1);
-
-    const li_2 = document.createElement('li');
-    li_2.textContent = `Release year: ${book.release_date}`;
-    ul.appendChild(li_2);
-
-    const li_3 = document.createElement('li');
-    let formatted_title = book.title;
-
-    if (new Date().getFullYear() == book.release_date)
-    {
-        formatted_title += " (new book)";
-    }
-
-    li_3.textContent = `Title: ${formatted_title}`;
-    ul.appendChild(li_3);
-
-    const li_4 = document.createElement('li');
-    li_4.textContent = `Number of pages: ${book.num_of_pages}`;
-    ul.appendChild(li_4);
-
-    const li_5 = document.createElement('li');
-    li_5.textContent = `Price: ${book.price}`;
-    li_5.appendChild(li_4);
-}
-
-function print_catalogue(catalogue)
-{
-    const accordion = document.querySelector('#accordionExample');
-    const category_item_template = document.querySelector('#category-item');
-    
     for (const category of catalogue) 
     {
-        let reference = get_random_string();
-      
-        let category_item = category_item_template.content.cloneNode(true);
-        let category_btn = category_item.querySelector('button');
-        category_btn.setAttribute('data-bs-target', `#${reference}`);
-        category_btn.setAttribute('aria-controls', reference);
-        let category_content = category_item.querySelector('#collapseTemplate');
-        category_content.id = reference;
-        let category_body = category_item.querySelector('.accordion-body');
+        let category_body = render_category(category.name);
 
-        accordion.appendChild(category_item);
-
-        category_btn.textContent = category.name;
-
-        let books = category.books;
-
-        for (const book of books) 
+        for (const book of category.books) 
         {
-            const books_ul = document.createElement('ul');
-            create_book_list_item(books_ul, book);
-            category_body.appendChild(books_ul);
+            category_body.appendChild(create_book_properties_list(book));
         }
     }
+})(catalogue);
+
+function render_category(category_name)
+{
+	const accordion_container = document.querySelector('#accordionExample');
+    const accordion_item_template = document.querySelector('#category-item');
+	const identifier = get_random_identifier();
+      
+	let accordion_item = accordion_item_template.content.cloneNode(true);
+
+	let accordion_title = accordion_item.querySelector('button');
+	accordion_title.setAttribute('data-bs-target', `#${identifier}`);
+	accordion_title.setAttribute('aria-controls', identifier);
+	accordion_title.textContent = category_name;
+
+	let accordion_body_container = accordion_item.querySelector('#collapseTemplate');
+	accordion_body_container.id = identifier;
+
+	let accordion_body = accordion_item.querySelector('.accordion-body');
+	
+	accordion_container.appendChild(accordion_item);
+
+	return accordion_body;
 }
 
-print_catalogue(book_catalogue);
+function create_book_properties_list(book)
+{
+	const list = document.createElement('ul');
 
+	const properties_to_print = [
+		`ISBN: ${book.isbn}`,
+		`Release year: ${book.release_date}`,
+		`Title: ${new Date().getFullYear() == book.release_date ? book.title += " (new book)" : book.title }`,
+		`Number of pages: ${book.num_of_pages}`,
+		`Price: ${book.price}`,
+	];
+
+	for (const property of properties_to_print) {
+		const list_item = document.createElement('li');
+		list_item.textContent = property;
+		list.appendChild(list_item);
+	}
+
+	return list;
+}
+
+function get_random_identifier()
+{
+	// returns a valid "class" or "id" string that starts with a letter followed by numbers
+	return "a" + Math.floor(Math.random() * 9999999);
+}

@@ -1,39 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <script src="./js/bootstrap.bundle.min.js" defer></script>
-    <script src="./js/script.js" defer></script>
-
-    <link rel="stylesheet" href="./css/bootstrap.min.css">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<script src="./js/bootstrap.bundle.min.js" defer></script>
+	<script src="./js/script.js" type="module" defer></script>
+	<link rel="stylesheet" href="./css/bootstrap.min.css">
 </head>
+
 <body>
-    <div class="container">
-        <div class="row">
-            <div class="col">
-                <div class="accordion" id="accordionExample">
-
-                  </div>
-            </div>
-        </div>
-    </div>
-
-    <template id="category-item">
-        <div class="accordion-item">
-            <h2 class="accordion-header">
-              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTemplate" aria-expanded="false" aria-controls="collapseTemplate">
-                Accordion Item
-              </button>
-            </h2>
-            <div id="collapseTemplate" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-              <div class="accordion-body">
-               
-              </div>
-            </div>
-          </div>
-    </template>
-
+	<div class="container">
+		<div class="row">
+			<div class="col">
+				<div class="accordion" id="accordionExample"></div>
+			</div>
+		</div>
+	</div>
+	<template id="category-item">
+		<div class="accordion-item">
+			<h2 class="accordion-header">
+				<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+					data-bs-target="#collapseTemplate" aria-expanded="false" aria-controls="collapseTemplate">
+				</button>
+			</h2>
+			<div id="collapseTemplate" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+				<div class="accordion-body"></div>
+			</div>
+		</div>
+	</template>
 </body>
+
 </html>
